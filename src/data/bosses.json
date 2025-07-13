@@ -1,0 +1,14 @@
+{
+  "The Last Giant": {
+    "gender": "male",
+    "race": "giant",
+    "souls": 6000,
+    "hp": 2530
+  },
+  "Flexile Sentry": {
+    "gender": "unknom",
+    "race": "abomination",
+    "souls": 6000,
+    "hp": 3150
+  }
+}

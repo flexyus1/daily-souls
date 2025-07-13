@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SendButtonImage from "../images/send-background.png";
+import bosses from "../data/bosses.json";
+const pageTitle = "Daily Souls - Classic";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <div class="page-button">
+    <div class="page-button__input-wrapper">
+      <input
+        type="text"
+        spellcheck="false"
+        placeholder="Digite o nome do Boss..."
+      />
+    </div>
+    <button>
+      <img src={SendButtonImage.src} class="page-button__image" alt="" />
+    </button>
+  </div>
+</BaseLayout>

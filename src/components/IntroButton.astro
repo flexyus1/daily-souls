@@ -1,8 +1,8 @@
 ---
-const { name } = Astro.props;
+const { name, path } = Astro.props;
 ---
 
-<div class="intro-button">
+<a href={path} class="intro-button">
   <button class="intro-button__button">{name}</button>
   <div class="intro-button__background"></div>
-</div>
+</a>

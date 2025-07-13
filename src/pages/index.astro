@@ -2,19 +2,9 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import IntroButtons from "../components/IntroButtons.astro";
 import "../styles/global.css";
+const pageTitle = "Daily Souls";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Daily Souls</title>
-	</head>
-	<body>
-		<BaseLayout>
-			<IntroButtons />
-		</BaseLayout>
-	</body>
-</html>
+<BaseLayout pageTitle={pageTitle}>
+	<IntroButtons />
+</BaseLayout>

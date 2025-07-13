@@ -5,8 +5,21 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  color: white;
+  color: #cccccc;
 
+}
+
+a {
+  color: inherit;
+}
+
+input {
+  background: none;
+  border: none;
+  font-size: inherit;
+  color: inherit;
+  outline: none;
+  font: inherit;
 }
 
 button {
@@ -66,7 +79,6 @@ button {
 
 }
 
-
 .intro-button__background::after {
   content: '';
   position: absolute;
@@ -95,6 +107,28 @@ button {
 }
 
 /*----------------------------------------------*/
+.page-button {
+  display: flex;
+  flex-direction: row;
+}
+
+
+.page-button__input {
+  height: 100%;
+  width: 100%;
+}
+
+.page-button__input-wrapper {
+  font-size: 40px;
+  height: fit-content;
+  border: 22px solid;
+  border-image: url('/images/input-background.png');
+  border-image-slice: 32 fill;
+}
+
+.page-button__image {
+  height: 100%;
+}
 
 /* -------- animations ---------- */
 @keyframes pulse-mask {
