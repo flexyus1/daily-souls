@@ -1,14 +1,579 @@
 {
-  "The Last Giant": {
-    "gender": "male",
-    "race": "giant",
-    "souls": 6000,
-    "hp": 2530
+  "the-last-giant": {
+    "slug": "the-last-giant",
+    "name": "The Last Giant",
+    "hp": 2530,
+    "optional": "no",
+    "resistance": [],
+    "weakness": [
+      "fire",
+      "lightning"
+    ],
+    "imunity": [],
+    "weapons": [
+      "arm"
+    ]
   },
-  "Flexile Sentry": {
-    "gender": "unknom",
-    "race": "abomination",
-    "souls": 6000,
-    "hp": 3150
+  "the-pursuer": {
+    "slug": "the-pursuer",
+    "name": "The Pursuer",
+    "hp": 3110,
+    "optional": "yes",
+    "resistance": [
+      "dark"
+    ],
+    "weakness": [
+      "lightning",
+      "strike"
+    ],
+    "imunity": [
+      "bleed"
+    ],
+    "weapons": [
+      "sword",
+      "shield"
+    ]
+  },
+  "executioners-chariot": {
+    "slug": "executioners-chariot",
+    "name": "Executioner's Chariot",
+    "hp": 4140,
+    "optional": "yes",
+    "resistance": [
+      "strike",
+      "dark"
+    ],
+    "weakness": [
+      "lightning",
+      "fire",
+      "bleed"
+    ],
+    "imunity": [],
+    "weapons": []
+  },
+  "looking-glass-knight": {
+    "slug": "looking-glass-knight",
+    "name": "Looking Glass Knight",
+    "hp": 6540,
+    "optional": "no",
+    "resistance": [
+      "lightning"
+    ],
+    "weakness": [
+      "strike",
+      "magic",
+      "fire",
+      "dark"
+    ],
+    "imunity": [
+      "bleed"
+    ],
+    "weapons": [
+      "sword",
+      "shield"
+    ]
+  },
+  "the-skeleton-lords": {
+    "slug": "the-skeleton-lords",
+    "name": "The Skeleton Lords",
+    "hp": 2080,
+    "optional": "no",
+    "resistance": [
+      "magic",
+      "thrust"
+    ],
+    "weakness": [
+      "fire",
+      "strike"
+    ],
+    "imunity": [
+      "poison",
+      "bleed"
+    ],
+    "weapons": [
+      "scythe",
+      "halberth",
+      "staff"
+    ]
+  },
+  "flexile-sentry": {
+    "slug": "flexile-sentry",
+    "name": "Flexile Sentry",
+    "hp": 3150,
+    "optional": "yes",
+    "resistance": [],
+    "weakness": [
+      "fire"
+    ],
+    "imunity": [],
+    "weapons": [
+      "dual sword"
+    ]
+  },
+  "lost-sinner": {
+    "slug": "lost-sinner",
+    "name": "Lost Sinner",
+    "hp": 3560,
+    "optional": "no",
+    "resistance": [
+      "bleed",
+      "fire",
+      "poison"
+    ],
+    "weakness": [
+      "magic"
+    ],
+    "imunity": [],
+    "weapons": [
+      "greatsword"
+    ]
+  },
+  "belfry-gargoyles": {
+    "slug": "belfry-gargoyles",
+    "name": "Belfry Gargoyles",
+    "hp": 1400,
+    "optional": "yes",
+    "resistance": [
+      "poison"
+    ],
+    "weakness": [
+      "strike",
+      "magic"
+    ],
+    "imunity": [
+      "bleed"
+    ],
+    "weapons": [
+      "spear"
+    ]
+  },
+  "ruin-sentinel": {
+    "slug": "ruin-sentinel",
+    "name": "Ruin Sentinel",
+    "hp": 2330,
+    "optional": "yes",
+    "resistance": [],
+    "weakness": [
+      "lightning",
+      "strike",
+      "poison",
+      "toxic"
+    ],
+    "imunity": [
+      "bleed"
+    ],
+    "weapons": [
+      "spear",
+      "shield"
+    ]
+  },
+  "royal-rat-vanguard": {
+    "slug": "royal-rat-vanguard",
+    "name": "Royal Rat Vanguard",
+    "hp": 1410,
+    "optional": "yes",
+    "resistance": [
+      "poison"
+    ],
+    "weakness": [
+      "fire"
+    ],
+    "imunity": [],
+    "weapons": []
+  },
+  "royal-rat-authority": {
+    "slug": "royal-rat-authority",
+    "name": "Royal Rat Authority",
+    "hp": 4330,
+    "optional": "yes",
+    "resistance": [
+      "poison"
+    ],
+    "weakness": [
+      "fire"
+    ],
+    "imunity": [],
+    "weapons": []
+  },
+  "scorpioness-najka": {
+    "slug": "scorpioness-najka",
+    "name": "Scorpioness Najka",
+    "hp": 5911,
+    "optional": "no",
+    "resistance": [
+      "magic"
+    ],
+    "weakness": [
+      "thrust",
+      "fire"
+    ],
+    "imunity": [
+      "poison"
+    ],
+    "weapons": [
+      "staff"
+    ]
+  },
+  "the-dukes-dear-freja": {
+    "slug": "the-dukes-dear-freja",
+    "name": "The Duke's Dear Freja",
+    "hp": 4220,
+    "optional": "no",
+    "resistance": [
+      "magic",
+      "lightning",
+      "dark"
+    ],
+    "weakness": [
+      "strike",
+      "fire",
+      "bleed"
+    ],
+    "imunity": [
+      "poison"
+    ],
+    "weapons": []
+  },
+  "mytha-the-baneful-queen": {
+    "slug": "mytha-the-baneful-queen",
+    "name": "Mytha, The Baneful Queen",
+    "hp": 3570,
+    "optional": "no",
+    "resistance": [
+      "slash",
+      "magic",
+      "lightning"
+    ],
+    "weakness": [
+      "thrust",
+      "fire"
+    ],
+    "imunity": [
+      "poison"
+    ],
+    "weapons": [
+      "spear",
+      "head"
+    ]
+  },
+  "the-rotten": {
+    "slug": "the-rotten",
+    "name": "The Rotten",
+    "hp": 7080,
+    "optional": "no",
+    "resistance": [
+      "strike",
+      "dark",
+      "poison"
+    ],
+    "weakness": [
+      "thrust",
+      "lightning",
+      "bleed"
+    ],
+    "imunity": [],
+    "weapons": [
+      "axe"
+    ]
+  },
+  "old-dragonslayer": {
+    "slug": "old-dragonslayer",
+    "name": "Old Dragonslayer",
+    "hp": 2880,
+    "optional": "yes",
+    "resistance": [
+      "dark"
+    ],
+    "weakness": [],
+    "imunity": [],
+    "weapons": [
+      "spear"
+    ]
+  },
+  "covetous-demon": {
+    "slug": "covetous-demon",
+    "name": "Covetous Demon",
+    "hp": 4440,
+    "optional": "no",
+    "resistance": [
+      "strike",
+      "lightning",
+      "poison"
+    ],
+    "weakness": [
+      "thrust",
+      "magic",
+      "fire",
+      "bleed"
+    ],
+    "imunity": [],
+    "weapons": []
+  },
+  "smelter-demon": {
+    "slug": "smelter-demon",
+    "name": "Smelter Demon",
+    "hp": 5970,
+    "optional": "yes",
+    "resistance": [
+      "fire"
+    ],
+    "weakness": [
+      "strike"
+    ],
+    "imunity": [
+      "bleed"
+    ],
+    "weapons": [
+      "sword"
+    ]
+  },
+  "old-iron-king": {
+    "slug": "old-iron-king",
+    "name": "Old Iron King",
+    "hp": 6070,
+    "optional": "no",
+    "resistance": [
+      "fire",
+      "poison"
+    ],
+    "weakness": [
+      "lightning"
+    ],
+    "imunity": [
+      "bleed"
+    ],
+    "weapons": []
+  },
+  "guardian-dragon": {
+    "slug": "guardian-dragon",
+    "name": "Guardian Dragon",
+    "hp": 5270,
+    "optional": "no",
+    "resistance": [
+      "fire"
+    ],
+    "weakness": [
+      "magic",
+      "dark"
+    ],
+    "imunity": [],
+    "weapons": []
+  },
+  "demon-song": {
+    "slug": "demon-song",
+    "name": "Demon Song",
+    "hp": 6180,
+    "optional": "no",
+    "resistance": [
+      "poison"
+    ],
+    "weakness": [
+      "bleed",
+      "magic",
+      "dark"
+    ],
+    "imunity": [],
+    "weapons": []
+  },
+  "velstadt-the-royal-aegis": {
+    "slug": "velstadt-the-royal-aegis",
+    "name": "Velstadt, The Royal Aegis",
+    "hp": 6290,
+    "optional": "no",
+    "resistance": [
+      "dark",
+      "poison",
+      "bleed"
+    ],
+    "weakness": [
+      "strike",
+      "lightning"
+    ],
+    "imunity": [],
+    "weapons": [
+      "heavy hammer"
+    ]
+  },
+  "vendrick": {
+    "slug": "vendrick",
+    "name": "Vendrick",
+    "hp": 11450,
+    "optional": "yes",
+    "resistance": [
+      "dark"
+    ],
+    "weakness": [],
+    "imunity": [
+      "poison"
+    ],
+    "weapons": [
+      "greatsword"
+    ]
+  },
+  "darklurker": {
+    "slug": "darklurker",
+    "name": "Darklurker",
+    "hp": 5770,
+    "optional": "yes",
+    "resistance": [
+      "dark"
+    ],
+    "weakness": [
+      "fire",
+      "lightning",
+      "magic"
+    ],
+    "imunity": [
+      "poison",
+      "bleed"
+    ],
+    "weapons": []
+  },
+  "dragonrider": {
+    "slug": "dragonrider",
+    "name": "Dragonrider",
+    "hp": 3050,
+    "optional": "no",
+    "resistance": [],
+    "weakness": [
+      "strike",
+      "fire",
+      "lightning"
+    ],
+    "imunity": [],
+    "weapons": [
+      "halberd",
+      "greatshield"
+    ]
+  },
+  "twin-dragonriders": {
+    "slug": "twin-dragonriders",
+    "name": "Twin Dragonriders",
+    "hp": 5140,
+    "optional": "no",
+    "resistance": [],
+    "weakness": [
+      "poison",
+      "strike",
+      "fire",
+      "lightning",
+      "dark"
+    ],
+    "imunity": [],
+    "weapons": [
+      "bow",
+      "halberd",
+      "greatshield"
+    ]
+  },
+  "prowling-magus-and-congregation": {
+    "slug": "prowling-magus-and-congregation",
+    "name": "Prowling Magus and Congregation",
+    "hp": 5100,
+    "optional": "no",
+    "resistance": [
+      "magic",
+      "dark"
+    ],
+    "weakness": [
+      "slash",
+      "thrust",
+      "fire",
+      "bleed"
+    ],
+    "imunity": [],
+    "weapons": []
+  },
+  "giant-lord": {
+    "slug": "giant-lord",
+    "name": "Giant Lord",
+    "hp": 5970,
+    "optional": "no",
+    "resistance": [
+      "physical"
+    ],
+    "weakness": [
+      "dark"
+    ],
+    "imunity": [],
+    "weapons": [
+      "greatsword"
+    ]
+  },
+  "ancient-dragon": {
+    "slug": "ancient-dragon",
+    "name": "Ancient Dragon",
+    "hp": 19840,
+    "optional": "yes",
+    "resistance": [
+      "fire",
+      "poison",
+      "bleed",
+      "physical"
+    ],
+    "weakness": [
+      "lightning"
+    ],
+    "imunity": [],
+    "weapons": []
+  },
+  "throne-watcher-and-throne-defender": {
+    "slug": "throne-watcher-and-throne-defender",
+    "name": "Throne Watcher and Throne Defender",
+    "hp": 6670,
+    "optional": "no",
+    "resistance": [
+      "poison",
+      "bleed"
+    ],
+    "weakness": [
+      "lightning"
+    ],
+    "imunity": [],
+    "weapons": [
+      "greatshield",
+      "small shield",
+      "longsword"
+    ]
+  },
+  "nashandra": {
+    "slug": "nashandra",
+    "name": "Nashandra",
+    "hp": 8770,
+    "optional": "no",
+    "resistance": [
+      "dark",
+      "poison"
+    ],
+    "weakness": [
+      "strike",
+      "lightning"
+    ],
+    "imunity": [
+      "bleed"
+    ],
+    "weapons": [
+      "dickle"
+    ]
+  },
+  "aldia-scholar-of-the-first-sin": {
+    "slug": "aldia-scholar-of-the-first-sin",
+    "name": "Aldia, Scholar of the First Sin",
+    "hp": 6800,
+    "optional": "yes",
+    "resistance": [
+      "fire",
+      "dark",
+      "poison"
+    ],
+    "weakness": [
+      "slash",
+      "lightning",
+      "magic"
+    ],
+    "imunity": [
+      "bleed"
+    ],
+    "weapons": []
   }
 }

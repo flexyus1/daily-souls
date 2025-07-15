@@ -33,6 +33,11 @@ button {
   cursor: pointer;
 }
 
+ul {
+  font: inherit;
+  list-style-type: none;
+}
+
 .main-header {
   height: 250px;
 }
@@ -40,8 +45,6 @@ button {
 .main-header__title {
   height: inherit;
 }
-
-.main-footer {}
 
 /*--------------Intro Buttons---------------*/
 .intro-button {
@@ -109,6 +112,7 @@ button {
 /*----------------------------------------------*/
 .page-button {
   display: flex;
+  position: relative;
   flex-direction: row;
 }
 
@@ -128,6 +132,74 @@ button {
 
 .page-button__image {
   height: 100%;
+}
+
+.page-button__boss-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: #211F19;
+
+}
+
+.page-button__list {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 12px 24px;
+  width: 100%;
+  text-align: center;
+  background-color: #161511;
+
+}
+
+.page-button__list>li {
+  margin-bottom: 8px;
+  font-size: 36px;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+.page-button__list>li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: radial-gradient(circle at center, #26241D 73%, transparent 100%);
+  filter: blur(2px);
+  z-index: -1;
+}
+
+.page-button__list>li:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: radial-gradient(circle at center, #bea180 73%, transparent 100%);
+  animation: pulse-opacity 3s infinite;
+  z-index: -1;
+}
+
+.navigation-bar {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  height: 60px;
+  width: 100%;
+  margin-bottom: 60px;
+
+}
+
+.navigation-bar>a svg {
+  height: 100%;
+  width: 50px;
 }
 
 /* -------- animations ---------- */
@@ -156,5 +228,17 @@ button {
   50% {
     opacity: 25%;
     background-size: 10% 100%;
+  }
+}
+
+@keyframes pulse-opacity {
+
+  0%,
+  100% {
+    opacity: 20%;
+  }
+
+  50% {
+    opacity: 10%;
   }
 }
