@@ -1,8 +1,0 @@
----
-import type { Boss } from "../types/types.ts";
-import bosses from "../data/bosses.json";
-
-const bossList: Boss[] = Object.values(bosses);
----
-
-{bossList.map((boss) => <li>{boss.name}</li>)}
