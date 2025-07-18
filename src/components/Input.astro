@@ -2,33 +2,10 @@
 import type { Boss } from "../types/types.ts";
 import bosses from "../data/bosses.json"              ;
 import SendButtonImage from "../images/send-background.png";
+import BossList from "../components/BossList.tsx"
 const bossList: Boss[] = Object.values(bosses);
 ---
-
-<div class="page-button">
-  <div class="page-button__input-wrapper">
-    <input id="user-input" type="text" spellcheck="false" placeholder="write the boss's name"/>
-  </div>
-  <button>
-    <img src={SendButtonImage.src} class="page-button__image" alt="" />
-  </button>
-  <div class="page-button__boss-list">
-    <ul id="answer-list" class="page-button__list">
-      {bossList.map((boss) => <li style="display: none;">{boss.name}</li>)}
-    </ul>
-  </div>
-</div>
-
-<script>
-  const input = document.getElementById('user-input') as HTMLInputElement | null
-  const items = Array.from(document.querySelectorAll('#answer-list li')) as HTMLLIElement[] 
-
-  input?.addEventListener('input', () => {
-    const term = input.value.trim().toLowerCase()
-
-    items.forEach((li) => {
-      const name = li.textContent?.toLowerCase()
-      li.style.display = name?.includes(term) ? '' : 'none'
-    })
-  })
-</script>
+<BossList client:load
+  bosses={bossList}
+  sendButtonImage={SendButtonImage.src}
+  />

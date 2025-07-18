@@ -1,12 +1,12 @@
-export type Boss = {
+export interface Boss {
   name: string
-}
-
-export type Bosses = {
   slug: string
-  name: string
   hp: number
   optional: string
   resistance: string[]
   weakness: string[]
+  imunity: string[]
+  weapons: string[]
 }
+
+export type Bosses = Boss[]
