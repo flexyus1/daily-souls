@@ -6,7 +6,6 @@ body {
   justify-content: flex-start;
   align-items: center;
   color: #cccccc;
-
 }
 
 a {
@@ -158,6 +157,7 @@ ul {
   width: 100%;
   text-align: center;
   background-color: #161511;
+  z-index: 3;
 
 }
 
@@ -258,6 +258,55 @@ ul {
   align-items: center;
   justify-content: center;
 }
+
+.categories__content-cell.green {
+  background-color: #219f21;
+}
+
+.categories__content-cell.red {
+  background-color: #790c0c;
+  position: relative;
+  z-index: 1;
+}
+
+.categories__content-cell.yellow {
+  background-color: #abb60f;
+}
+
+.categories__content-cell.arrow-up::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  background-image: url("/images/arrow.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80%;
+  opacity: 50%;
+}
+
+.categories__content-cell.arrow-down::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  background-image: url("/images/arrow.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80%;
+  opacity: 50%;
+  transform: scaleY(-1)
+}
+
+
+
+
 
 .categories__content-cell>img {
   width: fit-content;
