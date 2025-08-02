@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useState, useEffect } from "preact/hooks";
 import type { Boss, Bosses } from "../types/types";
 import "../styles/global.css"
 import type { JSX } from "preact/jsx-runtime";
@@ -8,12 +8,22 @@ interface Props {
   sendButtonImage: string;
 }
 
+function getTodayDateString(): string {
+  return new Date().toISOString().split('T')[0]
+}
+
 export default function BossList({ bosses, sendButtonImage }: Props) {
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState("")
   const [inputIsSelected, setInputIsSelected] = useState(false)
   const [selectedBoss, setSelectedBoss] = useState<Boss | null>(null)
   const [tries, setTries] = useState<Bosses>([])
+  const [inputDisabled, setInputDisabled] = useState(false)
+  const [victory, setVictory] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [streak, setStreak] = useState(0)
   const normalizedInputText = inputText.trim().toLocaleLowerCase()
+  const updatedTriesLocalStorage = [...tries, selectedBoss!]
+
 
   let filteredBosses: Bosses = bosses
   const triesSet = new Set(tries.map((t) => t.name))
@@ -51,13 +61,29 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     if (!selectedBoss) return
 
     const isCorrect = checkIfCorrect(selectedBoss)
-    // console.log(isCorrect)
-    setTries(prev => [...prev, selectedBoss])
+    if (isCorrect) {
+      setInputDisabled(true)
+      setVictory(true)
+      const today = getTodayDateString()
+      const lastPlayed = localStorage.getItem("lastPlayedDate")
+      localStorage.setItem("victory", "true")
+
+      if (lastPlayed !== today) {
+        const newStreak = streak + 1
+        setStreak(newStreak)
+        localStorage.setItem("streak", String(newStreak))
+        localStorage.setItem("lastPlayedDate", today)
+
+      }
+    }
+    setTries(updatedTriesLocalStorage)
+    localStorage.setItem("bossTries", JSON.stringify(updatedTriesLocalStorage))
     setInputText("")
     setSelectedBoss(null)
     console.log("------------------------------------------------------------")
     checkFields(selectedBoss)
     console.log("------------------------------------------------------------")
+    console.log(`Boss salvo: ${JSON.stringify(updatedTriesLocalStorage)}`)
     return
   }
   //verifica se o boss tentado é o mesmo do dia e retorna verdadeiro ou falso
@@ -159,12 +185,70 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     console.log(`Weapons: ${weaponsComparison}`)
   }
 
+  function Modal({ onClose }: { onClose: () => void }) {
+    return (
+      <div class="victory">
+        <div class="victory__background" onClick={onClose}></div>
+        <div class="victory__card">
+          <h1>VITÓRIA!</h1>
+          <img src={`/bossImages/${getDailyBoss().slug}.png`} />
+          <p>Você acertou</p>
+          <p>Streak Atual: {streak}</p>
+          <h2>{getDailyBoss().name}</h2>
+        </div>
+      </div>
+    )
+  }
+
+  //verifica se o vitoria é verdadeiro para exibir o modal
+  useEffect(() => {
+    if (victory) {
+      setShowModal(true)
+    }
+  }, [victory]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("streak");
+      if (stored) {
+        setStreak(parseInt(stored));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const today = getTodayDateString()
+    const lastPlayed = localStorage.getItem("lastPlayedDate")
+    const getBossTriesStored: string | null = localStorage.getItem("bossTries")
+    const streakFromStorage = localStorage.getItem("streak")
+    const victoryFromStorage = localStorage.getItem("victory")
+    if (streakFromStorage) {
+      setStreak(parseInt(streakFromStorage))
+    }
+
+    if (victoryFromStorage === "true") {
+      setVictory(true)
+      setInputDisabled(true)
+    }
+    if (lastPlayed !== today) {
+      setTries([]);
+      localStorage.removeItem("bossTries")
+      localStorage.removeItem("victory")
+
+    }
+    else if (getBossTriesStored) {
+      const parsedTries = JSON.parse(getBossTriesStored);
+      setTries(parsedTries);
+    }
+  }, [])
+
   const suggestionsIsEmpty = filteredBosses.length === 0
   const inputIsEmpty = inputText.trim() === ""
   const showSuggestions = inputIsSelected && !inputIsEmpty && !suggestionsIsEmpty
+
   return (
     <div class="boss-list">
-      <div class="page-button">
+      <div class="page-button" >
         <div class="page-button__input-wrapper">
           <input
             type="text"
@@ -174,6 +258,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
             onInput={e => setInputText((e.target as HTMLInputElement).value)}
             onFocus={() => setInputIsSelected(true)}
             onBlur={() => setTimeout(() => setInputIsSelected(false), 100)}
+            disabled={inputDisabled}//DESATIVA INPUT
 
           />
         </div>
@@ -189,14 +274,15 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
         )}
       </div>
       <div class="categories">
+        {showModal && <Modal onClose={() => setShowModal(false)} />}
         <div class="categories__header">
           <div class="categories__category">BOSS</div>
           <div class="categories__category">NAME</div>
           <div class="categories__category">HP</div>
           <div class="categories__category">WEAPONS</div>
-          <div class="categories__category">RESISTANCE</div>
-          <div class="categories__category">WEAKNESS</div>
-          <div class="categories__category">IMUNITY</div>
+          <div class="categories__category">RESISTANCES</div>
+          <div class="categories__category">WEAKNESSES</div>
+          <div class="categories__category">IMMUNITIES</div>
           <div class="categories__category">OPTIONAL</div>
         </div>
         <div class="categories__content">

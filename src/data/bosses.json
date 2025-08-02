@@ -3,7 +3,7 @@
     "slug": "the-last-giant",
     "name": "The Last Giant",
     "hp": 2530,
-    "optional": "no",
+    "optional": "required",
     "resistance": [],
     "weakness": [
       "fire",
@@ -18,7 +18,7 @@
     "slug": "the-pursuer",
     "name": "The Pursuer",
     "hp": 3110,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [
       "dark"
     ],
@@ -38,7 +38,7 @@
     "slug": "executioners-chariot",
     "name": "Executioner's Chariot",
     "hp": 4140,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [
       "strike",
       "dark"
@@ -55,7 +55,7 @@
     "slug": "looking-glass-knight",
     "name": "Looking Glass Knight",
     "hp": 6540,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "lightning"
     ],
@@ -77,7 +77,7 @@
     "slug": "the-skeleton-lords",
     "name": "The Skeleton Lords",
     "hp": 2080,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "magic",
       "thrust"
@@ -100,7 +100,7 @@
     "slug": "flexile-sentry",
     "name": "Flexile Sentry",
     "hp": 3150,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [],
     "weakness": [
       "fire"
@@ -114,7 +114,7 @@
     "slug": "lost-sinner",
     "name": "Lost Sinner",
     "hp": 3560,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "bleed",
       "fire",
@@ -132,7 +132,7 @@
     "slug": "belfry-gargoyles",
     "name": "Belfry Gargoyles",
     "hp": 1400,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [
       "poison"
     ],
@@ -151,7 +151,7 @@
     "slug": "ruin-sentinel",
     "name": "Ruin Sentinel",
     "hp": 2330,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [],
     "weakness": [
       "lightning",
@@ -171,7 +171,7 @@
     "slug": "royal-rat-vanguard",
     "name": "Royal Rat Vanguard",
     "hp": 1410,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [
       "poison"
     ],
@@ -185,7 +185,7 @@
     "slug": "royal-rat-authority",
     "name": "Royal Rat Authority",
     "hp": 4330,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [
       "poison"
     ],
@@ -199,7 +199,7 @@
     "slug": "scorpioness-najka",
     "name": "Scorpioness Najka",
     "hp": 5911,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "magic"
     ],
@@ -218,7 +218,7 @@
     "slug": "the-dukes-dear-freja",
     "name": "The Duke's Dear Freja",
     "hp": 4220,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "magic",
       "lightning",
@@ -238,7 +238,7 @@
     "slug": "mytha-the-baneful-queen",
     "name": "Mytha, The Baneful Queen",
     "hp": 3570,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "slash",
       "magic",
@@ -260,7 +260,7 @@
     "slug": "the-rotten",
     "name": "The Rotten",
     "hp": 7080,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "strike",
       "dark",
@@ -280,7 +280,7 @@
     "slug": "old-dragonslayer",
     "name": "Old Dragonslayer",
     "hp": 2880,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [
       "dark"
     ],
@@ -294,7 +294,7 @@
     "slug": "covetous-demon",
     "name": "Covetous Demon",
     "hp": 4440,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "strike",
       "lightning",
@@ -313,7 +313,7 @@
     "slug": "smelter-demon",
     "name": "Smelter Demon",
     "hp": 5970,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [
       "fire"
     ],
@@ -331,7 +331,7 @@
     "slug": "old-iron-king",
     "name": "Old Iron King",
     "hp": 6070,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "fire",
       "poison"
@@ -348,7 +348,7 @@
     "slug": "guardian-dragon",
     "name": "Guardian Dragon",
     "hp": 5270,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "fire"
     ],
@@ -363,7 +363,7 @@
     "slug": "demon-song",
     "name": "Demon Song",
     "hp": 6180,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "poison"
     ],
@@ -379,7 +379,7 @@
     "slug": "velstadt-the-royal-aegis",
     "name": "Velstadt, The Royal Aegis",
     "hp": 6290,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "dark",
       "poison",
@@ -398,7 +398,7 @@
     "slug": "vendrick",
     "name": "Vendrick",
     "hp": 11450,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [
       "dark"
     ],
@@ -414,7 +414,7 @@
     "slug": "darklurker",
     "name": "Darklurker",
     "hp": 5770,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [
       "dark"
     ],
@@ -433,7 +433,7 @@
     "slug": "dragonrider",
     "name": "Dragonrider",
     "hp": 3050,
-    "optional": "no",
+    "optional": "optional",
     "resistance": [],
     "weakness": [
       "strike",
@@ -450,7 +450,7 @@
     "slug": "twin-dragonriders",
     "name": "Twin Dragonriders",
     "hp": 5140,
-    "optional": "no",
+    "optional": "required",
     "resistance": [],
     "weakness": [
       "poison",
@@ -470,7 +470,7 @@
     "slug": "prowling-magus-and-congregation",
     "name": "Prowling Magus and Congregation",
     "hp": 5100,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "magic",
       "dark"
@@ -488,7 +488,7 @@
     "slug": "giant-lord",
     "name": "Giant Lord",
     "hp": 5970,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "physical"
     ],
@@ -504,7 +504,7 @@
     "slug": "ancient-dragon",
     "name": "Ancient Dragon",
     "hp": 19840,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [
       "fire",
       "poison",
@@ -521,7 +521,7 @@
     "slug": "throne-watcher-and-throne-defender",
     "name": "Throne Watcher and Throne Defender",
     "hp": 6670,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "poison",
       "bleed"
@@ -540,7 +540,7 @@
     "slug": "nashandra",
     "name": "Nashandra",
     "hp": 8770,
-    "optional": "no",
+    "optional": "required",
     "resistance": [
       "dark",
       "poison"
@@ -553,14 +553,14 @@
       "bleed"
     ],
     "weapons": [
-      "dickle"
+      "scythe"
     ]
   },
   "aldia-scholar-of-the-first-sin": {
     "slug": "aldia-scholar-of-the-first-sin",
     "name": "Aldia, Scholar of the First Sin",
     "hp": 6800,
-    "optional": "yes",
+    "optional": "optional",
     "resistance": [
       "fire",
       "dark",
