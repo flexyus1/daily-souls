@@ -60,6 +60,11 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   function sendClickHandler(): void {
     if (!selectedBoss) return
 
+    const today = getTodayDateString();
+    const lastPlayed = localStorage.getItem("lastPlayedDate");
+    if (lastPlayed !== today) {
+      localStorage.setItem("lastPlayedDate", today);
+    }
     const isCorrect = checkIfCorrect(selectedBoss)
     if (isCorrect) {
       setInputDisabled(true)
@@ -72,7 +77,6 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
         const newStreak = streak + 1
         setStreak(newStreak)
         localStorage.setItem("streak", String(newStreak))
-        localStorage.setItem("lastPlayedDate", today)
 
       }
     }
@@ -258,7 +262,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
             onInput={e => setInputText((e.target as HTMLInputElement).value)}
             onFocus={() => setInputIsSelected(true)}
             onBlur={() => setTimeout(() => setInputIsSelected(false), 100)}
-            disabled={inputDisabled}//DESATIVA INPUT
+            disabled={inputDisabled}
 
           />
         </div>
