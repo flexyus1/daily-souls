@@ -147,9 +147,9 @@
       "spear"
     ]
   },
-  "ruin-sentinel": {
-    "slug": "ruin-sentinel",
-    "name": "Ruin Sentinel",
+  "ruin-sentinels": {
+    "slug": "ruin-sentinels",
+    "name": "Ruin Sentinels",
     "hp": 2330,
     "optional": "optional",
     "resistance": [],

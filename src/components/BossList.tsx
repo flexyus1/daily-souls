@@ -22,7 +22,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   const [showModal, setShowModal] = useState(false)
   const [streak, setStreak] = useState(0)
   const normalizedInputText = inputText.trim().toLocaleLowerCase()
-  const updatedTriesLocalStorage = [...tries, selectedBoss!]
+  // const updatedTriesLocalStorage = [...tries, selectedBoss!]
 
 
   let filteredBosses: Bosses = bosses
@@ -59,7 +59,16 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   }
 
   function sendClickHandler(): void {
+
+
     if (!selectedBoss) return
+
+    const today = getTodayDateString()
+    const lastPlayed = localStorage.getItem("lastPlayedDate")
+
+    if (lastPlayed !== today) {
+      localStorage.setItem("lastPlayedDate", today);
+    }
     const isCorrect = checkIfCorrect(selectedBoss)
     if (isCorrect) {
       setInputDisabled(true)
@@ -68,15 +77,16 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       const lastPlayed = localStorage.getItem("lastPlayedDate")
       localStorage.setItem("victory", "true")
 
-      if (lastPlayed !== today) {
-        localStorage.setItem("lastPlayedDate", today);
-        const newStreak = streak + 1
-        setStreak(newStreak)
-        localStorage.setItem("streak", String(newStreak))
-      }
+      const newStreak = streak + 1
+      setStreak(newStreak)
+      localStorage.setItem("streak", String(newStreak))
+
     }
-    setTries(updatedTriesLocalStorage)
-    localStorage.setItem("bossTries", JSON.stringify(updatedTriesLocalStorage))
+    setTries(currentTries => {
+      const newTries = [...currentTries, selectedBoss!]
+      localStorage.setItem("bossTries", JSON.stringify(newTries))
+      return newTries
+    })
     setInputText("")
     setSelectedBoss(null)
     checkFields(selectedBoss)
