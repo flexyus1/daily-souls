@@ -51,20 +51,15 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     const onClickHandler = () => {
       setInputText(boss.name)
       setSelectedBoss(boss)
+      setInputIsSelected(false);
     }
     return (
-      <li onClick={onClickHandler}>{boss.name}</li>
+      <li onMouseDown={e => e.preventDefault()} onClick={onClickHandler}>{boss.name}</li>
     )
   }
 
   function sendClickHandler(): void {
     if (!selectedBoss) return
-
-    const today = getTodayDateString();
-    const lastPlayed = localStorage.getItem("lastPlayedDate");
-    if (lastPlayed !== today) {
-      localStorage.setItem("lastPlayedDate", today);
-    }
     const isCorrect = checkIfCorrect(selectedBoss)
     if (isCorrect) {
       setInputDisabled(true)
@@ -74,20 +69,17 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       localStorage.setItem("victory", "true")
 
       if (lastPlayed !== today) {
+        localStorage.setItem("lastPlayedDate", today);
         const newStreak = streak + 1
         setStreak(newStreak)
         localStorage.setItem("streak", String(newStreak))
-
       }
     }
     setTries(updatedTriesLocalStorage)
     localStorage.setItem("bossTries", JSON.stringify(updatedTriesLocalStorage))
     setInputText("")
     setSelectedBoss(null)
-    console.log("------------------------------------------------------------")
     checkFields(selectedBoss)
-    console.log("------------------------------------------------------------")
-    console.log(`Boss salvo: ${JSON.stringify(updatedTriesLocalStorage)}`)
     return
   }
   //verifica se o boss tentado é o mesmo do dia e retorna verdadeiro ou falso
@@ -161,19 +153,19 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     if (userBossAttempt.name === dailyBoss.name) {
       console.log("Name: Correto")
     } else {
-      console.error(`Name: Errado - deveria ser ${dailyBoss.name}`)
+      console.error(`Name: Errado`)
     }
 
     if (userBossAttempt.hp === dailyBoss.hp) {
       console.log("HP: Correto")
     } else {
-      console.error(`HP: Errado - deveria ser ${dailyBoss.hp}`)
+      console.error(`HP: Errado`)
     }
 
     if (userBossAttempt.optional === dailyBoss.optional) {
       console.log("Optional: Correto")
     } else {
-      console.error(`Optional: Errado - deveria ser ${dailyBoss.optional}`)
+      console.error(`Optional: Errado`)
     }
 
     const resistanceComparison = fieldComparison(userBossAttempt.resistance, dailyBoss.resistance)
@@ -259,11 +251,15 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
             spellcheck={false}
             placeholder="write the boss's name"
             value={inputText}
-            onInput={e => setInputText((e.target as HTMLInputElement).value)}
+            onInput={e => { setInputText((e.target as HTMLInputElement).value); setInputIsSelected(true) }}
             onFocus={() => setInputIsSelected(true)}
             onBlur={() => setTimeout(() => setInputIsSelected(false), 100)}
             disabled={inputDisabled}
-
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                sendClickHandler()
+              }
+            }}
           />
         </div>
         <button onClick={sendClickHandler}>
