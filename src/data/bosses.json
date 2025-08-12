@@ -92,7 +92,7 @@
     ],
     "weapons": [
       "scythe",
-      "halberth",
+      "halberd",
       "staff"
     ]
   },
@@ -107,7 +107,7 @@
     ],
     "imunity": [],
     "weapons": [
-      "dual sword"
+      "sword"
     ]
   },
   "lost-sinner": {
@@ -443,7 +443,7 @@
     "imunity": [],
     "weapons": [
       "halberd",
-      "greatshield"
+      "shield"
     ]
   },
   "twin-dragonriders": {
@@ -463,7 +463,7 @@
     "weapons": [
       "bow",
       "halberd",
-      "greatshield"
+      "shield"
     ]
   },
   "prowling-magus-and-congregation": {
@@ -531,9 +531,8 @@
     ],
     "imunity": [],
     "weapons": [
-      "greatshield",
-      "small shield",
-      "longsword"
+      "shield",
+      "sword"
     ]
   },
   "nashandra": {

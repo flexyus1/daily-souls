@@ -6,6 +6,7 @@ body {
   justify-content: flex-start;
   align-items: center;
   color: #cccccc;
+  
 }
 
 a {
@@ -141,13 +142,15 @@ ul {
 
 .page-button__boss-list {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   top: 100%;
   width: 100%;
   position: absolute;
   background-color: #211F19;
-
+  overflow-y: auto;
+  max-height: 400px;
+  z-index: 3;
 }
 
 .page-button__list {
@@ -167,6 +170,23 @@ ul {
   cursor: pointer;
   position: relative;
   z-index: 2;
+}
+
+.page-button__boss-list::-webkit-scrollbar {
+  width: 12px;
+}
+
+.page-button__boss-list::-webkit-scrollbar-track {
+  background: #211F19;
+}
+
+.page-button__boss-list::-webkit-scrollbar-thumb {
+  background: #877658;
+  border-radius: 6px;
+}
+
+.page-button__boss-list::-webkit-scrollbar-thumb:hover {
+  background: #bea180;
 }
 
 .page-button__list>li.highlighted::after {
@@ -204,10 +224,6 @@ ul {
   animation: pulse-opacity 3s infinite;
   z-index: -1;
 }
-
-/* .page-button__list:hover>li.highlighted::after {
-  display: none;
-} */
 
 .navigation-bar {
   display: flex;
@@ -249,6 +265,7 @@ ul {
   display: flex;
   flex-direction: row;
   gap: 8px;
+  perspective: 1000px;
 }
 
 .categories__category {
@@ -332,6 +349,22 @@ ul {
   width: 82px;
 }
 
+.is-revealing .categories__content-cell {
+  animation: flip-in 0.6s ease-out;
+  animation-fill-mode: backwards;
+}
+
+/* prettier-ignore-start */
+.is-revealing .categories__content-cell:nth-child(1) { animation-delay: 0s; }
+.is-revealing .categories__content-cell:nth-child(2) { animation-delay: 0.5s; }
+.is-revealing .categories__content-cell:nth-child(3) { animation-delay: 1s; }
+.is-revealing .categories__content-cell:nth-child(4) { animation-delay: 1.5s; }
+.is-revealing .categories__content-cell:nth-child(5) { animation-delay: 2s; }
+.is-revealing .categories__content-cell:nth-child(6) { animation-delay: 2.5s; }
+.is-revealing .categories__content-cell:nth-child(7) { animation-delay: 3s; }
+.is-revealing .categories__content-cell:nth-child(8) { animation-delay: 3.5s; }
+/* prettier-ignore-end */
+
 .victory__card {
   background-color: #111;
   border: 2px solid #aaa;
@@ -405,5 +438,17 @@ ul {
 
   50% {
     opacity: 10%;
+  }
+}
+
+@keyframes flip-in {
+  from {
+    transform: rotateY(90deg) translateX(8px);
+    opacity: 0;
+  }
+
+  to {
+    transform: rotateY(0deg) translateX(0);
+    opacity: 1;
   }
 }

@@ -85,6 +85,11 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       const newStreak = streak + 1
       setStreak(newStreak)
       localStorage.setItem("streak", String(newStreak))
+
+        const totalAnimationTime = 3500 + 600;
+        setTimeout(() => {
+            setShowModal(true);
+        }, totalAnimationTime);
     }
 
     setTries(curr => {
@@ -112,18 +117,21 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   }
 
 
-  function renderBossRow(boss: Boss): JSX.Element {
+  function renderBossRow(boss: Boss, index: number, allTries:Boss[] ): JSX.Element  {
     const dailyBoss = getDailyBoss()
+    const isNewestTry = index === allTries.length - 1;
+    const rowClasses = `categories__content-row ${isNewestTry ? "is-revealing" : ""}`
+
     const nameClass = boss.name === dailyBoss.name ? "green" : "red"
     const hpClass = boss.hp === dailyBoss.hp ? "green" : "red"
-    const hpArrow = boss.hp > dailyBoss.hp ? "arrow-down" : "arrow-up"
+     const hpArrow = boss.hp === dailyBoss.hp ? "" : (boss.hp > dailyBoss.hp ? "arrow-down" : "arrow-up");
     const weaponsClass = fieldComparison(boss.weapons, dailyBoss.weapons)
     const resistanceClass = fieldComparison(boss.resistance, dailyBoss.resistance)
     const weaknessClass = fieldComparison(boss.weakness, dailyBoss.weakness)
     const imunityClass = fieldComparison(boss.imunity, dailyBoss.imunity)
     const optionalClass = boss.optional === dailyBoss.optional ? "green" : "red"
     return (
-      <div class="categories__content-row" key={boss.slug}>
+      <div class={rowClasses} key={boss.slug}>
         <div class="categories__content-cell">
           <img src={`/bossImages/${boss.slug}.png`} alt={boss.name} />
         </div>
@@ -259,13 +267,6 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     }
   }, [filteredBosses.length, highlightIndex])
 
-  //verifica se o vitoria é verdadeiro para exibir o modal
-  useEffect(() => {
-    if (victory) {
-      setShowModal(true)
-    }
-  }, [victory]);
-
   // verificação feita para garantir que o código seja executado apenas no lado do cliente, não do servidor
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -303,6 +304,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       if (victoryFromStorage === "true") {
         setVictory(true);
         setInputDisabled(true);
+         setShowModal(true); 
       }
 
       if (getBossTriesStored) {
