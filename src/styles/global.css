@@ -169,6 +169,18 @@ ul {
   z-index: 2;
 }
 
+.page-button__list>li.highlighted::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: radial-gradient(circle at center, #bea180 73%, transparent 100%);
+  animation: pulse-opacity 3s infinite;
+  z-index: -1;
+}
+
 .page-button__list>li::before {
   content: '';
   position: absolute;
@@ -192,6 +204,10 @@ ul {
   animation: pulse-opacity 3s infinite;
   z-index: -1;
 }
+
+/* .page-button__list:hover>li.highlighted::after {
+  display: none;
+} */
 
 .navigation-bar {
   display: flex;

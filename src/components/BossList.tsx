@@ -22,8 +22,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   const [showModal, setShowModal] = useState(false)
   const [streak, setStreak] = useState(0)
   const normalizedInputText = inputText.trim().toLocaleLowerCase()
-  // const updatedTriesLocalStorage = [...tries, selectedBoss!]
-
+  const [highlightIndex, setHighlightIndex] = useState(-1);
 
   let filteredBosses: Bosses = bosses
   const triesSet = new Set(tries.map((t) => t.name))
@@ -47,50 +46,56 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       })
   }
 
-  function renderBossSuggestion(boss: Boss): JSX.Element {
+  function renderBossSuggestion(boss: Boss, idx: number): JSX.Element {
+    const isHighlighted = idx === highlightIndex;
+
     const onClickHandler = () => {
       setInputText(boss.name)
       setSelectedBoss(boss)
       setInputIsSelected(false);
     }
     return (
-      <li onMouseDown={e => e.preventDefault()} onClick={onClickHandler}>{boss.name}</li>
+      <li onMouseDown={e => e.preventDefault()} class={isHighlighted ? "highlighted" : ""} onClick={onClickHandler}>{boss.name}</li>
     )
   }
 
   function sendClickHandler(): void {
+    // resolver o boss a partir do texto, se nada estiver selecionado
+    const typed = inputText.trim().toLowerCase()
+    const resolved =
+      selectedBoss && selectedBoss.name === inputText
+        ? selectedBoss
+        : bosses.find(b => b.name.toLowerCase() === typed) || null
 
+    if (!resolved) {
+      setSelectedBoss(null)
+      return
+    }
 
-    if (!selectedBoss) return
-
+    // usar sempre `resolved` daqui pra frente
     const today = getTodayDateString()
     const lastPlayed = localStorage.getItem("lastPlayedDate")
+    if (lastPlayed !== today) localStorage.setItem("lastPlayedDate", today)
 
-    if (lastPlayed !== today) {
-      localStorage.setItem("lastPlayedDate", today);
-    }
-    const isCorrect = checkIfCorrect(selectedBoss)
+    const isCorrect = checkIfCorrect(resolved)
     if (isCorrect) {
       setInputDisabled(true)
       setVictory(true)
-      const today = getTodayDateString()
-      const lastPlayed = localStorage.getItem("lastPlayedDate")
       localStorage.setItem("victory", "true")
-
       const newStreak = streak + 1
       setStreak(newStreak)
       localStorage.setItem("streak", String(newStreak))
-
     }
-    setTries(currentTries => {
-      const newTries = [...currentTries, selectedBoss!]
+
+    setTries(curr => {
+      const newTries = [...curr, resolved]
       localStorage.setItem("bossTries", JSON.stringify(newTries))
       return newTries
     })
+
     setInputText("")
     setSelectedBoss(null)
-    checkFields(selectedBoss)
-    return
+    checkFields(resolved)
   }
   //verifica se o boss tentado é o mesmo do dia e retorna verdadeiro ou falso
   function checkIfCorrect(userBossAttempt: Boss): boolean {
@@ -105,6 +110,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     const filtered = arr.filter(item => item.trim() !== "");
     return filtered.length > 0 ? filtered.join(", ") : "none";
   }
+
 
   function renderBossRow(boss: Boss): JSX.Element {
     const dailyBoss = getDailyBoss()
@@ -206,6 +212,53 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     )
   }
 
+  function onInputKey(e: JSX.TargetedKeyboardEvent<HTMLInputElement>) {
+    if (e.key === "ArrowDown") {
+      if (!showSuggestions) return;
+      e.preventDefault()
+      setHighlightIndex(i => Math.min(i + 1, filteredBosses.length - 1))
+    }
+
+    if (e.key === 'ArrowUp') {
+      if (!showSuggestions) return;
+      e.preventDefault();
+      setHighlightIndex(i => Math.max(i - 1, 0));
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+
+      if (highlightIndex >= 0 && highlightIndex < filteredBosses.length) {
+        const boss = filteredBosses[highlightIndex];
+
+        // alinhe os estados para passar na verificação
+        setInputText(boss.name);
+        setSelectedBoss(boss);
+        setInputIsSelected(false);
+
+        // dispara o envio no próximo tick
+        setTimeout(() => {
+          sendClickHandler();
+        }, 0);
+      } else {
+        // sem destaque: mantém o comportamento atual
+        sendClickHandler();
+      }
+      return;
+    }
+  }
+  //sempre que o texto muda, ele reseta o highlight
+  useEffect(() => {
+    setHighlightIndex(-1)
+  }, [inputText])
+
+  useEffect(() => {
+    if (highlightIndex >= filteredBosses.length) {
+      setHighlightIndex(filteredBosses.length - 1)
+    }
+  }, [filteredBosses.length, highlightIndex])
+
   //verifica se o vitoria é verdadeiro para exibir o modal
   useEffect(() => {
     if (victory) {
@@ -213,40 +266,51 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     }
   }, [victory]);
 
+  // verificação feita para garantir que o código seja executado apenas no lado do cliente, não do servidor
   useEffect(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("streak");
       if (stored) {
-        setStreak(parseInt(stored));
+        setStreak(parseInt(stored))
       }
     }
   }, []);
 
   useEffect(() => {
-    const today = getTodayDateString()
-    const lastPlayed = localStorage.getItem("lastPlayedDate")
-    const getBossTriesStored: string | null = localStorage.getItem("bossTries")
-    const streakFromStorage = localStorage.getItem("streak")
-    const victoryFromStorage = localStorage.getItem("victory")
+    const today = getTodayDateString();
+    const lastPlayed = localStorage.getItem("lastPlayedDate");
+    const streakFromStorage = localStorage.getItem("streak");
+
     if (streakFromStorage) {
-      setStreak(parseInt(streakFromStorage))
+      setStreak(parseInt(streakFromStorage));
     }
-
-    if (victoryFromStorage === "true") {
-      setVictory(true)
-      setInputDisabled(true)
-    }
+    //Verifica se o dia mudou.
     if (lastPlayed !== today) {
+      //Se for um novo dia, resetamos tudo
+      localStorage.removeItem("bossTries");
+      localStorage.removeItem("victory");
+      //garantimos que o estado do React está limpo também
       setTries([]);
-      localStorage.removeItem("bossTries")
-      localStorage.removeItem("victory")
+      setVictory(false);
+      setInputDisabled(false);
+      //defini a data de hoje para evitar que essa lógica rode de novo se o usuário recarregar a página
+      localStorage.setItem("lastPlayedDate", today)
+    } else {
+      //se for o mesmo dia, carregamos o progresso salvo.
+      const getBossTriesStored = localStorage.getItem("bossTries");
+      const victoryFromStorage = localStorage.getItem("victory");
 
+      if (victoryFromStorage === "true") {
+        setVictory(true);
+        setInputDisabled(true);
+      }
+
+      if (getBossTriesStored) {
+        const parsedTries = JSON.parse(getBossTriesStored);
+        setTries(parsedTries);
+      }
     }
-    else if (getBossTriesStored) {
-      const parsedTries = JSON.parse(getBossTriesStored);
-      setTries(parsedTries);
-    }
-  }, [])
+  }, []);
 
   const suggestionsIsEmpty = filteredBosses.length === 0
   const inputIsEmpty = inputText.trim() === ""
@@ -265,11 +329,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
             onFocus={() => setInputIsSelected(true)}
             onBlur={() => setTimeout(() => setInputIsSelected(false), 100)}
             disabled={inputDisabled}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                sendClickHandler()
-              }
-            }}
+            onKeyDown={onInputKey}
           />
         </div>
         <button onClick={sendClickHandler}>
@@ -278,7 +338,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
         {showSuggestions && (
           <div class="page-button__boss-list">
             <ul class="page-button__list">
-              {filteredBosses.map(renderBossSuggestion)}
+              {filteredBosses.map((boss, idx) => renderBossSuggestion(boss, idx))}
             </ul>
           </div>
         )}
