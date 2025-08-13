@@ -22,7 +22,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   const [showModal, setShowModal] = useState(false)
   const [streak, setStreak] = useState(0)
   const normalizedInputText = inputText.trim().toLocaleLowerCase()
-  const [highlightIndex, setHighlightIndex] = useState(-1);
+  const [highlightIndex, setHighlightIndex] = useState(0);
 
   let filteredBosses: Bosses = bosses
   const triesSet = new Set(tries.map((t) => t.name))
@@ -86,10 +86,10 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       setStreak(newStreak)
       localStorage.setItem("streak", String(newStreak))
 
-        const totalAnimationTime = 3500 + 600;
-        setTimeout(() => {
-            setShowModal(true);
-        }, totalAnimationTime);
+      const totalAnimationTime = 3500 + 600;
+      setTimeout(() => {
+        setShowModal(true);
+      }, totalAnimationTime);
     }
 
     setTries(curr => {
@@ -117,14 +117,14 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   }
 
 
-  function renderBossRow(boss: Boss, index: number, allTries:Boss[] ): JSX.Element  {
+  function renderBossRow(boss: Boss, index: number, allTries: Boss[]): JSX.Element {
     const dailyBoss = getDailyBoss()
     const isNewestTry = index === allTries.length - 1;
     const rowClasses = `categories__content-row ${isNewestTry ? "is-revealing" : ""}`
 
     const nameClass = boss.name === dailyBoss.name ? "green" : "red"
     const hpClass = boss.hp === dailyBoss.hp ? "green" : "red"
-     const hpArrow = boss.hp === dailyBoss.hp ? "" : (boss.hp > dailyBoss.hp ? "arrow-down" : "arrow-up");
+    const hpArrow = boss.hp === dailyBoss.hp ? "" : (boss.hp > dailyBoss.hp ? "arrow-down" : "arrow-up");
     const weaponsClass = fieldComparison(boss.weapons, dailyBoss.weapons)
     const resistanceClass = fieldComparison(boss.resistance, dailyBoss.resistance)
     const weaknessClass = fieldComparison(boss.weakness, dailyBoss.weakness)
@@ -206,6 +206,20 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   }
 
   function Modal({ onClose }: { onClose: () => void }) {
+    useEffect(() => {
+      const audio = new Audio("/src/sounds/victory.mp3");
+      import("canvas-confetti").then((module) => {
+        module.default();
+      });
+      audio.play().catch(() => {
+        console.log("Autoplay bloqueado pelo navegador");
+      });
+    }, []);
+
+    useEffect(() => {
+
+    }, []);
+
     return (
       <div class="victory">
         <div class="victory__background" onClick={onClose}></div>
@@ -258,7 +272,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   }
   //sempre que o texto muda, ele reseta o highlight
   useEffect(() => {
-    setHighlightIndex(-1)
+    setHighlightIndex(0)
   }, [inputText])
 
   useEffect(() => {
@@ -304,7 +318,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       if (victoryFromStorage === "true") {
         setVictory(true);
         setInputDisabled(true);
-         setShowModal(true); 
+        setShowModal(true);
       }
 
       if (getBossTriesStored) {
