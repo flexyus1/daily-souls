@@ -20,9 +20,11 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   const [inputDisabled, setInputDisabled] = useState(false)
   const [victory, setVictory] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [showLoseModal, setShowLoseModal] = useState(false)
   const [streak, setStreak] = useState(0)
-  const normalizedInputText = inputText.trim().toLocaleLowerCase()
   const [highlightIndex, setHighlightIndex] = useState(0);
+  const [lives, setLives] = useState(7);
+  const normalizedInputText = inputText.trim().toLocaleLowerCase()
 
   let filteredBosses: Bosses = bosses
   const triesSet = new Set(tries.map((t) => t.name))
@@ -66,10 +68,23 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       selectedBoss && selectedBoss.name === inputText
         ? selectedBoss
         : bosses.find(b => b.name.toLowerCase() === typed) || null
-
+    if (lives <= 0 || inputDisabled) {
+      return; // não permite tentativa se não houver vidas
+    }
     if (!resolved) {
       setSelectedBoss(null)
       return
+    }
+   if (!checkIfCorrect(resolved)) {
+      setLives(prev => {
+       const newLives = prev - 1;
+       localStorage.setItem("livesLeft", String(newLives));
+    if (newLives <= 0) {
+      setInputDisabled(true);
+      setShowLoseModal(true);
+        }
+    return newLives;
+      });
     }
 
     // usar sempre `resolved` daqui pra frente
@@ -207,7 +222,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
 
   function Modal({ onClose }: { onClose: () => void }) {
     useEffect(() => {
-      const audio = new Audio("/src/sounds/victory.mp3");
+      const audio = new Audio("/sounds/victory.mp3");
       import("canvas-confetti").then((module) => {
         module.default();
       });
@@ -233,6 +248,31 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       </div>
     )
   }
+
+  function LoseModal({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    // opcional: som de derrota
+    const audio = new Audio("/public/sounds/defeat.mp3");
+    audio.play().catch(() => {
+      console.log("Autoplay bloqueado pelo navegador");
+    });
+  }, []);
+
+  const boss = getDailyBoss();
+
+  return (
+    <div class="victory">{/* você pode criar uma classe 'defeat' se quiser estilizar diferente */}
+      <div class="victory__background" onClick={onClose}></div>
+      <div class="victory__card">
+        <h1>DERROTA!</h1>
+        <img src={`/bossImages/${boss.slug}.png`} alt={boss.name} />
+        <p>Suas vidas acabaram.</p>
+        <p>O boss de hoje era:</p>
+        <h2>{boss.name}</h2>
+      </div>
+    </div>
+  );
+}
 
   function onInputKey(e: JSX.TargetedKeyboardEvent<HTMLInputElement>) {
     if (e.key === "ArrowDown") {
@@ -295,10 +335,12 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     const today = getTodayDateString();
     const lastPlayed = localStorage.getItem("lastPlayedDate");
     const streakFromStorage = localStorage.getItem("streak");
+    const storedLives = localStorage.getItem("livesLeft");
 
     if (streakFromStorage) {
       setStreak(parseInt(streakFromStorage));
     }
+
     //Verifica se o dia mudou.
     if (lastPlayed !== today) {
       //Se for um novo dia, resetamos tudo
@@ -308,6 +350,8 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       setTries([]);
       setVictory(false);
       setInputDisabled(false);
+      setLives(7); // resetar vidas
+      localStorage.setItem("livesLeft", "7");
       //defini a data de hoje para evitar que essa lógica rode de novo se o usuário recarregar a página
       localStorage.setItem("lastPlayedDate", today)
     } else {
@@ -324,6 +368,13 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       if (getBossTriesStored) {
         const parsedTries = JSON.parse(getBossTriesStored);
         setTries(parsedTries);
+      }
+      if (storedLives !== null) {
+        setLives(parseInt(storedLives));
+          if (parseInt(storedLives) <= 0) {
+          setInputDisabled(true);
+          setShowLoseModal(true);
+       }
       }
     }
   }, []);
@@ -359,8 +410,12 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
           </div>
         )}
       </div>
+      <div class="lives-counter">
+        <p>Vidas restantes: {lives}</p>
+      </div>
       <div class="categories">
         {showModal && <Modal onClose={() => setShowModal(false)} />}
+        {showLoseModal && <LoseModal onClose={() => setShowLoseModal(false)} />}
         <div class="categories__header">
           <div class="categories__category">BOSS</div>
           <div class="categories__category">NAME</div>

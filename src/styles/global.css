@@ -6,11 +6,16 @@ body {
   justify-content: flex-start;
   align-items: center;
   color: #cccccc;
+  height: 100%;
   
 }
 
 a {
   color: inherit;
+}
+
+.base-content {
+ flex-grow: 1;
 }
 
 input {
