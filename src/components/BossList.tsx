@@ -19,7 +19,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   const [tries, setTries] = useState<Bosses>([])
   const [inputDisabled, setInputDisabled] = useState(false)
   const [victory, setVictory] = useState(false)
-  const [showModal, setShowModal] = useState(false)
+  const [winModal, setWinModal] = useState(false)
   const [showLoseModal, setShowLoseModal] = useState(false)
   const [streak, setStreak] = useState(0)
   const [highlightIndex, setHighlightIndex] = useState(0);
@@ -79,10 +79,13 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       setLives(prev => {
        const newLives = prev - 1;
        localStorage.setItem("livesLeft", String(newLives));
-    if (newLives <= 0) {
-      setInputDisabled(true);
-      setShowLoseModal(true);
-        }
+      if (newLives <= 0) {
+           setInputDisabled(true);
+      const totalAnimationTime = 3500 + 600;
+          setTimeout(() => {
+          setShowLoseModal(true);
+      }, totalAnimationTime);
+    }
     return newLives;
       });
     }
@@ -103,7 +106,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
 
       const totalAnimationTime = 3500 + 600;
       setTimeout(() => {
-        setShowModal(true);
+        setWinModal(true);
       }, totalAnimationTime);
     }
 
@@ -220,55 +223,45 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     console.log(`Weapons: ${weaponsComparison}`)
   }
 
-  function Modal({ onClose }: { onClose: () => void }) {
-    useEffect(() => {
-      const audio = new Audio("/sounds/victory.mp3");
-      import("canvas-confetti").then((module) => {
-        module.default();
-      });
-      audio.play().catch(() => {
-        console.log("Autoplay bloqueado pelo navegador");
-      });
-    }, []);
+  function WinModal({ onClose }: { onClose: () => void }) {
+  const boss = getDailyBoss();
 
-    useEffect(() => {
-
-    }, []);
-
-    return (
-      <div class="victory">
-        <div class="victory__background" onClick={onClose}></div>
-        <div class="victory__card">
-          <h1>VITÓRIA!</h1>
-          <img src={`/bossImages/${getDailyBoss().slug}.png`} />
-          <p>Você acertou</p>
-          <p>Streak Atual: {streak}</p>
-          <h2>{getDailyBoss().name}</h2>
-        </div>
-      </div>
-    )
-  }
-
-  function LoseModal({ onClose }: { onClose: () => void }) {
   useEffect(() => {
-    // opcional: som de derrota
-    const audio = new Audio("/public/sounds/defeat.mp3");
+    const audio = new Audio("/sounds/victory.mp3");
+    audio.play().catch(() => {
+      console.log("Autoplay bloqueado pelo navegador");
+    });
+
+  }, []);
+
+  return (
+    <div class="victory-screen" onClick={onClose}>
+      <div class="victory-screen__text">Boss Encontrado</div>
+      <div class="victory-screen__boss-info">
+        <img src={`/bossImages/${boss.slug}.png`} alt={boss.name} />
+        <div class="victory-screen__boss-name">{boss.name}</div>
+        <div class="victory-screen__streak">Streak Atual: {streak}</div>
+      </div>
+    </div>
+  );
+}
+
+function LoseModal({ onClose }: { onClose: () => void }) {
+  const boss = getDailyBoss();
+
+  useEffect(() => {
+    const audio = new Audio("/sounds/defeat.mp3");
     audio.play().catch(() => {
       console.log("Autoplay bloqueado pelo navegador");
     });
   }, []);
 
-  const boss = getDailyBoss();
-
   return (
-    <div class="victory">{/* você pode criar uma classe 'defeat' se quiser estilizar diferente */}
-      <div class="victory__background" onClick={onClose}></div>
-      <div class="victory__card">
-        <h1>DERROTA!</h1>
+    <div class="defeat-screen" onClick={onClose}>
+      <div class="defeat-screen__text">Você Perdeu</div>
+      <div class="defeat-screen__boss-info">
         <img src={`/bossImages/${boss.slug}.png`} alt={boss.name} />
-        <p>Suas vidas acabaram.</p>
-        <p>O boss de hoje era:</p>
-        <h2>{boss.name}</h2>
+        <div class="defeat-screen__boss-name">{boss.name}</div>
       </div>
     </div>
   );
@@ -362,7 +355,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       if (victoryFromStorage === "true") {
         setVictory(true);
         setInputDisabled(true);
-        setShowModal(true);
+        setWinModal(true);
       }
 
       if (getBossTriesStored) {
@@ -411,10 +404,17 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
         )}
       </div>
       <div class="lives-counter">
-        <p>Vidas restantes: {lives}</p>
+        <img
+          src={
+            lives >= 5
+              ? "/images/estus-full.png"
+              : lives >= 2
+              ? "/images/estus-midle.png"
+              : "/images/estus-empty.png"
+          } class="estus-image" />
       </div>
       <div class="categories">
-        {showModal && <Modal onClose={() => setShowModal(false)} />}
+        {winModal && <WinModal onClose={() => setWinModal(false)} />}
         {showLoseModal && <LoseModal onClose={() => setShowLoseModal(false)} />}
         <div class="categories__header">
           <div class="categories__category">BOSS</div>

@@ -7,7 +7,9 @@ body {
   align-items: center;
   color: #cccccc;
   height: 100%;
-  
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 a {
@@ -25,6 +27,9 @@ input {
   color: inherit;
   outline: none;
   font: inherit;
+  width: 100%; /* O input vai ocupar toda a largura do contêiner */
+  height: 40px; /* Deixa o input mais fino */
+  padding: 0 15px; /* Ajuste de padding */
 }
 
 button {
@@ -36,6 +41,7 @@ button {
   color: inherit;
   font: inherit;
   cursor: pointer;
+  height: 85px;
 }
 
 ul {
@@ -48,7 +54,10 @@ ul {
 }
 
 .main-header__title {
-  height: inherit;
+  max-width: 80%;
+  height: auto;
+  margin: 0 auto;
+  display: block; 
 }
 
 /*--------------Intro Buttons---------------*/
@@ -134,11 +143,13 @@ ul {
 }
 
 .page-button__input-wrapper {
-  font-size: 40px;
+  font-size: 32px;
+  width: 600px;
   height: fit-content;
   border: 22px solid;
   border-image: url('/images/input-background.png');
   border-image-slice: 32 fill;
+  position: relative;
 }
 
 .page-button__image {
@@ -150,12 +161,13 @@ ul {
   align-items: flex-start;
   justify-content: center;
   top: 100%;
-  width: 100%;
+  width: 645px;
   position: absolute;
   background-color: #211F19;
   overflow-y: auto;
   max-height: 400px;
   z-index: 3;
+  position: absolute;
 }
 
 .page-button__list {
@@ -370,40 +382,118 @@ ul {
 .is-revealing .categories__content-cell:nth-child(8) { animation-delay: 3.5s; }
 /* prettier-ignore-end */
 
-.victory__card {
-  background-color: #111;
-  border: 2px solid #aaa;
-  color: rgb(255, 217, 0);
-  padding: 2rem;
-  text-align: center;
-  border-radius: 1rem;
-  width: 280px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-}
-
-.victory__card img {
-  width: 150px;
-  height: auto;
-  margin: 1rem 0;
-}
-
-.victory__background {
+.victory-screen {
   position: fixed;
   top: 0;
   left: 0;
-  opacity: 50%;
-  width: 100vw;
-  height: 100vh;
-  transition: opacity 0.5s;
-  background: #333333;
-  z-index: 4;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 10, 10, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-/*------------------------------------ */
+.victory-screen__text {
+  color: #d4af37;
+  font-size: 5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  opacity: 0;
+  animation: textFadeIn 2s ease-in 0.5s forwards;
+  text-shadow: 0 0 12px rgba(255, 217, 0, 0.5);
+}
+
+.victory-screen__boss-info {
+  margin-top: 40px;
+  text-align: center;
+  opacity: 0;
+  animation: bossFadeIn 2s ease-in 1.5s forwards;
+  color: #ccc;
+}
+
+.victory-screen__boss-info img {
+  width: 150px;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.victory-screen__boss-name {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.victory-screen__streak {
+  font-size: 1.5rem;
+  color: #d4af37;
+}
+
+
+.defeat-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 10, 10, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.defeat-screen__text {
+  color: #8b0000;
+  font-size: 6rem;
+  font-weight: bold;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  opacity: 0;
+  animation: textFadeIn 2s ease-in 0.5s forwards;
+}
+
+.defeat-screen__boss-info {
+  margin-top: 40px;
+  text-align: center;
+  opacity: 0;
+  animation: bossFadeIn 2s ease-in 1.5s forwards;
+}
+
+.defeat-screen__boss-info img {
+  width: 150px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.defeat-screen__boss-name {
+  color: white;
+  font-size: 2rem;
+}
+
+.lives-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+  height: 60px; /* ou o tamanho da imagem */
+}
+
+.estus-image {
+  margin-top: 10px;
+  width: auto;
+  height: 130px;
+  background-size: cover; 
+  background-position: center;
+}
+
 
 /* -------- animations ---------- */
 @keyframes pulse-mask {
@@ -455,5 +545,27 @@ ul {
   to {
     transform: rotateY(0deg) translateX(0);
     opacity: 1;
+  }
+}
+
+@keyframes textFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bossFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
