@@ -48,6 +48,19 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
       })
   }
 
+  const statusIconMap: Record<string, string> = {
+  bleed: "/icons/bleed.png",
+  lightning: "/icons/lightning.png",
+  slash: "/icons/slash.png",
+  strike: "/icons/strike.png",
+  thrust: "/icons/thrust.png",
+  magic: "/icons/magic.png",
+  fire: "/icons/fire.png",
+  dark: "/icons/dark.png",
+  physical: "/icons/physical.png",
+  poison: "icons/poison.png"
+  };
+
   function renderBossSuggestion(boss: Boss, idx: number): JSX.Element {
     const isHighlighted = idx === highlightIndex;
 
@@ -128,12 +141,23 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     return false
   }
 
-  function defineNone(arr: string[] | undefined | null): string {
-    if (!arr || arr.length === 0) return "none";
-    const filtered = arr.filter(item => item.trim() !== "");
-    return filtered.length > 0 ? filtered.join(", ") : "none";
+function StatusIcons({ statusUses: statusUses }: { statusUses: string[] | undefined | null }) {
+  // Se o array estiver vazio ou não existir, retorne "none"
+  if (!statusUses || statusUses.length === 0 || statusUses.every(s => s.trim() === "")) {
+    return <span>none</span>;
   }
-
+  return (
+    <div class="status-icon-container">
+      {statusUses.map(status => {
+        const iconSrc = statusIconMap[status.toLowerCase().trim()];
+        if (!iconSrc) {
+          return <span>{status}</span>;
+        }
+        return (<img src={iconSrc} class="status-icon"/>);
+      })}
+    </div>
+        );
+  }
 
   function renderBossRow(boss: Boss, index: number, allTries: Boss[]): JSX.Element {
     const dailyBoss = getDailyBoss()
@@ -155,10 +179,10 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
         </div>
         <div class={`categories__content-cell ${nameClass}`}>{boss.name}</div>
         <div class={`categories__content-cell ${hpClass} ${hpArrow}`}>{boss.hp}</div>
-        <div class={`categories__content-cell ${weaponsClass}`}>{defineNone(boss.weapons)}</div>
-        <div class={`categories__content-cell ${resistanceClass}`}>{defineNone(boss.resistance)}</div>
-        <div class={`categories__content-cell ${weaknessClass}`}>{defineNone(boss.weakness)}</div>
-        <div class={`categories__content-cell ${imunityClass}`}>{defineNone(boss.imunity)}</div>
+        <div class={`categories__content-cell ${weaponsClass}`}><StatusIcons statusUses={boss.weapons} /></div>
+        <div class={`categories__content-cell ${resistanceClass}`}><StatusIcons statusUses={boss.resistance} /></div>
+        <div class={`categories__content-cell ${weaknessClass}`}><StatusIcons statusUses={boss.weakness} /></div>
+        <div class={`categories__content-cell ${imunityClass}`}><StatusIcons statusUses={boss.imunity} /></div>
         <div class={`categories__content-cell ${optionalClass}`}>{boss.optional.trim() ? boss.optional : "none"}</div>
       </div>
     );
@@ -283,6 +307,7 @@ function LoseModal({ onClose }: { onClose: () => void }) {
 
     if (e.key === 'Enter') {
       e.preventDefault();
+      if (inputText.trim() === "") return;
 
       if (highlightIndex >= 0 && highlightIndex < filteredBosses.length) {
         const boss = filteredBosses[highlightIndex];
