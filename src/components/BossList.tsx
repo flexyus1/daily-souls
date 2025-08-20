@@ -58,7 +58,7 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   fire: "/icons/fire.png",
   dark: "/icons/dark.png",
   physical: "/icons/physical.png",
-  poison: "icons/poison.png"
+  poison: "/icons/poison.png"
   };
 
   function renderBossSuggestion(boss: Boss, idx: number): JSX.Element {
