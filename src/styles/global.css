@@ -426,7 +426,7 @@ ul {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 8px;
-  color: #fff;
+  color: #ffffff;
 }
 
 .victory-screen__streak {
@@ -474,7 +474,7 @@ ul {
 }
 
 .defeat-screen__boss-name {
-  color: white;
+  color: rgb(255, 255, 255);
   font-size: 2rem;
 }
 
@@ -495,9 +495,13 @@ ul {
 }
 
 .status-icon-container {
-  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
   padding: 4px;
+  max-width: 94px;
 }
 
 .status-icon {
@@ -515,6 +519,47 @@ ul {
   filter: saturate(2) drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
 }
 
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  width: max-content;
+  max-width: 150px;
+  background-color: #161511;
+  color: #cccccc;
+  text-align: center;
+  font-size: 14px;
+  text-transform: capitalize;
+  border-radius: 6px;
+  padding: 8px 12px;
+  border: 1px solid #877658;
+  position: absolute;
+  z-index: 10; 
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.3s ease-out;
+}
+
+.tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #877658 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
 
 /* -------- animations ---------- */
 @keyframes pulse-mask {

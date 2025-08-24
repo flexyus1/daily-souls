@@ -141,23 +141,34 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
     return false
   }
 
-function StatusIcons({ statusUses: statusUses }: { statusUses: string[] | undefined | null }) {
-  // Se o array estiver vazio ou não existir, retorne "none"
+function StatusIcons({ statusUses }: { statusUses: string[] | undefined | null }) {
   if (!statusUses || statusUses.length === 0 || statusUses.every(s => s.trim() === "")) {
     return <span>none</span>;
   }
+
   return (
     <div class="status-icon-container">
-      {statusUses.map(status => {
+      {statusUses.map((status) => {
         const iconSrc = statusIconMap[status.toLowerCase().trim()];
+
         if (!iconSrc) {
           return <span>{status}</span>;
         }
-        return (<img src={iconSrc} class="status-icon"/>);
+
+        return (
+          <div class="tooltip" key={status}>
+            <img
+              src={iconSrc}
+              class="status-icon"
+              alt={status}
+            />
+            <span class="tooltip-text">{status}</span>  {/* Tooltip customizado */}
+          </div>
+        );
       })}
     </div>
-        );
-  }
+  );
+}
 
   function renderBossRow(boss: Boss, index: number, allTries: Boss[]): JSX.Element {
     const dailyBoss = getDailyBoss()
