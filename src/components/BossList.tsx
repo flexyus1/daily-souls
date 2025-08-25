@@ -147,7 +147,7 @@ function StatusIcons({ statusUses }: { statusUses: string[] | undefined | null }
   }
 
   return (
-    <div class="status-icon-container">
+    <div class={`status-icon-container count-${statusUses.length}`}>
       {statusUses.map((status) => {
         const iconSrc = statusIconMap[status.toLowerCase().trim()];
 

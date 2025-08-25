@@ -495,17 +495,25 @@ ul {
 }
 
 .status-icon-container {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 40px);
+  grid-auto-rows: 40px;
+  gap: 8px;                 
+  width: 90px;
+  height: 90px;
+  place-content: center;   
+  justify-items: center;    
   align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding: 4px;
-  max-width: 94px;
+}
+
+.status-icon-container.count-1 .tooltip:nth-child(1),
+.status-icon-container.count-3 .tooltip:nth-child(3) {
+  grid-column: 1 / -1; 
+  justify-self: center;
 }
 
 .status-icon {
-  width: 40px;
+  width: 40px; 
   height: 40px;
   border-radius: 6px;
   background-color: rgba(0, 0, 0, 0.3);
@@ -519,9 +527,18 @@ ul {
   filter: saturate(2) drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
 }
 
+.status-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .tooltip {
   position: relative;
-  display: inline-block;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
 }
 
 .tooltip .tooltip-text {
