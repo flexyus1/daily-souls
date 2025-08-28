@@ -61,6 +61,29 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   poison: "/icons/poison.png"
   };
 
+  const textures = [
+  "/images/background1.png",
+  "/images/background2.png",
+  "/images/background3.png",
+  ];
+
+  // hash simples e rápido -> 0..(n-1)
+  function pickIndex(key: string, modulo = textures.length): number {
+    let h = 2166136261 >>> 0;                // FNV-like
+    for (let i = 0; i < key.length; i++) {
+      h ^= key.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return (h >>> 0) % modulo;
+  }
+
+  // devolve o style com a CSS var preenchida
+  function bgVarFor(key: string) {
+    const idx = pickIndex(key);
+    const url = textures[idx];
+    return { ["--bg-images" as any]: `url("${url}")` };
+  }
+
   function renderBossSuggestion(boss: Boss, idx: number): JSX.Element {
     const isHighlighted = idx === highlightIndex;
 
@@ -146,29 +169,27 @@ function StatusIcons({ statusUses }: { statusUses: string[] | undefined | null }
     return <span>none</span>;
   }
 
+  const normalized = statusUses.map(s => s.toLowerCase().trim());
+  const isTextMode = normalized.every(s => !statusIconMap[s]);
+
   return (
-    <div class={`status-icon-container count-${statusUses.length}`}>
-      {statusUses.map((status) => {
-        const iconSrc = statusIconMap[status.toLowerCase().trim()];
-
-        if (!iconSrc) {
-          return <span>{status}</span>;
-        }
-
+    <div class={`status-icon-container ${isTextMode ? "text-mode" : "icon-mode"} count-${statusUses.length}`}>
+      {normalized.map((status) => {
+        const iconSrc = statusIconMap[status];
+        if (!iconSrc) return <span class="status-text" key={status}>{status}</span>;
         return (
           <div class="tooltip" key={status}>
-            <img
-              src={iconSrc}
-              class="status-icon"
-              alt={status}
-            />
-            <span class="tooltip-text">{status}</span>  {/* Tooltip customizado */}
+            <span class="status-badge">
+              <img src={iconSrc} class="status-icon" alt={status} />
+            </span>
+            <span class="tooltip-text">{status}</span>
           </div>
         );
       })}
     </div>
   );
 }
+
 
   function renderBossRow(boss: Boss, index: number, allTries: Boss[]): JSX.Element {
     const dailyBoss = getDailyBoss()
@@ -188,13 +209,13 @@ function StatusIcons({ statusUses }: { statusUses: string[] | undefined | null }
         <div class="categories__content-cell">
           <img src={`/bossImages/${boss.slug}.png`} alt={boss.name} />
         </div>
-        <div class={`categories__content-cell ${nameClass}`}>{boss.name}</div>
-        <div class={`categories__content-cell ${hpClass} ${hpArrow}`}>{boss.hp}</div>
-        <div class={`categories__content-cell ${weaponsClass}`}><StatusIcons statusUses={boss.weapons} /></div>
-        <div class={`categories__content-cell ${resistanceClass}`}><StatusIcons statusUses={boss.resistance} /></div>
-        <div class={`categories__content-cell ${weaknessClass}`}><StatusIcons statusUses={boss.weakness} /></div>
-        <div class={`categories__content-cell ${imunityClass}`}><StatusIcons statusUses={boss.imunity} /></div>
-        <div class={`categories__content-cell ${optionalClass}`}>{boss.optional.trim() ? boss.optional : "none"}</div>
+        <div class={`categories__content-cell ${nameClass}`} style={bgVarFor(`${boss.slug}-name`)}>{boss.name}</div>
+        <div class={`categories__content-cell ${hpClass} ${hpArrow}`} style={bgVarFor(`${boss.slug}-hp`)}>{boss.hp}</div>
+        <div class={`categories__content-cell ${weaponsClass}`} style={bgVarFor(`${boss.slug}-weapons`)}><StatusIcons statusUses={boss.weapons} /></div>
+        <div class={`categories__content-cell ${resistanceClass}`}  style={bgVarFor(`${boss.slug}-resistance`)}><StatusIcons statusUses={boss.resistance} /></div>
+        <div class={`categories__content-cell ${weaknessClass}`} style={bgVarFor(`${boss.slug}-weakness`)}><StatusIcons statusUses={boss.weakness} /></div>
+        <div class={`categories__content-cell ${imunityClass}`} style={bgVarFor(`${boss.slug}-imunity`)}><StatusIcons statusUses={boss.imunity} /></div>
+        <div class={`categories__content-cell ${optionalClass}`} style={bgVarFor(`${boss.slug}-optional`)}>{boss.optional.trim() ? boss.optional : "none"}</div>
       </div>
     );
   }
