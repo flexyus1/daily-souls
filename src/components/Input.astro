@@ -2,7 +2,7 @@
 import type { Boss } from "../types/types.ts";
 import bosses from "../data/bosses.json"              ;
 import SendButtonImage from "../images/send-background.png";
-import BossList from "../components/BossList.tsx"
+import BossList from "./bosses/BossList"
 const bossList: Boss[] = Object.values(bosses);
 ---
 <BossList client:load

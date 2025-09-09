@@ -1,0 +1,20 @@
+import "../../styles/global.css";
+
+export default function Tips() {
+  return (
+    <div class="color-legend">
+      <div class="legend-item">
+        <div class="legend-square red"></div>
+        <span class="legend-text">Wrong</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-square yellow"></div>
+        <span class="legend-text">Partially Correct</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-square green"></div>
+        <span class="legend-text">Correct</span>
+      </div>
+    </div>
+  );
+}
