@@ -58,13 +58,15 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   fire: "/icons/fire.png",
   dark: "/icons/dark.png",
   physical: "/icons/physical.png",
-  poison: "/icons/poison.png"
+  poison: "/icons/poison.png",
+  none: "/images/x.png"
   };
 
-  const textures = [
-  "/images/background1.png",
+    const textures = [
   "/images/background2.png",
   "/images/background3.png",
+  "/images/background4.png",
+  "/images/background5.png",
   ];
 
   // hash simples e rápido -> 0..(n-1)
@@ -166,7 +168,16 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
 
 function StatusIcons({ statusUses }: { statusUses: string[] | undefined | null }) {
   if (!statusUses || statusUses.length === 0 || statusUses.every(s => s.trim() === "")) {
-    return <span>none</span>;
+    return (
+      <div class="status-icon-container icon-mode count-1">
+        <div class="tooltip">
+          <span class="status-badge">
+            <img src="/icons/none.png" class="status-icon" alt="none" />
+          </span>
+          <span class="tooltip-text">none</span>
+        </div>
+      </div>
+    );
   }
 
   const normalized = statusUses.map(s => s.toLowerCase().trim());
@@ -191,11 +202,10 @@ function StatusIcons({ statusUses }: { statusUses: string[] | undefined | null }
 }
 
 
-  function renderBossRow(boss: Boss, index: number, allTries: Boss[]): JSX.Element {
+ function renderBossRow(boss: Boss, index: number, allTries: Boss[]): JSX.Element {
     const dailyBoss = getDailyBoss()
     const isNewestTry = index === allTries.length - 1;
     const rowClasses = `categories__content-row ${isNewestTry ? "is-revealing" : ""}`
-
     const nameClass = boss.name === dailyBoss.name ? "green" : "red"
     const hpClass = boss.hp === dailyBoss.hp ? "green" : "red"
     const hpArrow = boss.hp === dailyBoss.hp ? "" : (boss.hp > dailyBoss.hp ? "arrow-down" : "arrow-up");
@@ -206,15 +216,15 @@ function StatusIcons({ statusUses }: { statusUses: string[] | undefined | null }
     const optionalClass = boss.optional === dailyBoss.optional ? "green" : "red"
     return (
       <div class={rowClasses} key={boss.slug}>
-        <div class="categories__content-cell">
+        <div class="categories__content-cell" >
           <img src={`/bossImages/${boss.slug}.png`} alt={boss.name} />
         </div>
-        <div class={`categories__content-cell ${nameClass}`} style={bgVarFor(`${boss.slug}-name`)}>{boss.name}</div>
+        <div class={`categories__content-cell field ${nameClass}`} style={bgVarFor(`${boss.slug}-name`)}>{boss.name}</div>
         <div class={`categories__content-cell ${hpClass} ${hpArrow}`} style={bgVarFor(`${boss.slug}-hp`)}>{boss.hp}</div>
         <div class={`categories__content-cell ${weaponsClass}`} style={bgVarFor(`${boss.slug}-weapons`)}><StatusIcons statusUses={boss.weapons} /></div>
         <div class={`categories__content-cell ${resistanceClass}`}  style={bgVarFor(`${boss.slug}-resistance`)}><StatusIcons statusUses={boss.resistance} /></div>
         <div class={`categories__content-cell ${weaknessClass}`} style={bgVarFor(`${boss.slug}-weakness`)}><StatusIcons statusUses={boss.weakness} /></div>
-        <div class={`categories__content-cell ${imunityClass}`} style={bgVarFor(`${boss.slug}-imunity`)}><StatusIcons statusUses={boss.imunity} /></div>
+        <div class={`categories__content-cell ${imunityClass}`} style={bgVarFor(`${boss.slug}-imunity`)}><StatusIcons statusUses={boss.imunity}/></div>
         <div class={`categories__content-cell ${optionalClass}`} style={bgVarFor(`${boss.slug}-optional`)}>{boss.optional.trim() ? boss.optional : "none"}</div>
       </div>
     );
@@ -440,7 +450,7 @@ function LoseModal({ onClose }: { onClose: () => void }) {
           <input
             type="text"
             spellcheck={false}
-            placeholder="write the boss's name"
+            placeholder="Write the boss's name"
             value={inputText}
             onInput={e => { setInputText((e.target as HTMLInputElement).value); setInputIsSelected(true) }}
             onFocus={() => setInputIsSelected(true)}

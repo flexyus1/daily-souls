@@ -166,8 +166,9 @@ ul {
   background-color: #211F19;
   overflow-y: auto;
   max-height: 400px;
-  z-index: 3;
+  z-index: 100;
   position: absolute;
+
 }
 
 .page-button__list {
@@ -263,7 +264,8 @@ ul {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  color: #ffffff;
+  color: #d9d9d9;
+  letter-spacing: 0.8px;
 }
 
 .categories__header {
@@ -275,6 +277,8 @@ ul {
   margin-top: 8px;
   gap: 8px;
   display: flex;
+  position: relative;
+  z-index: 5;
   flex-direction: column-reverse;
 }
 
@@ -283,6 +287,11 @@ ul {
   flex-direction: row;
   gap: 8px;
   perspective: 1000px;
+  position: relative;
+}
+
+.categories__content-row:hover {
+  z-index: 2;
 }
 
 .categories__category {
@@ -304,11 +313,18 @@ ul {
   border: 2px solid #877658;
   text-align: center;
   font-size: 18px;
+  font-family: "adobe-garamond-pro", serif;
   height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
 
+}
+
+.categories__content-cell:hover { z-index: 10; }
+
+.categories__content-cell.field {
+  padding: 4px;
 }
 
 .categories__content-cell span {
@@ -328,8 +344,8 @@ ul {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: -2;
-  background-image: var(--bg-images), radial-gradient(105% 120% at 50% 30%, var(--tint) 0%, #000 75%);
+  z-index: -5;
+  background-image: var(--bg-images), radial-gradient(160% 180% at 60% 30%, var(--tint) 0%, #000 75%);
   background-size: cover, cover;
   background-position: center, center;
   background-blend-mode: luminosity;
@@ -339,16 +355,16 @@ ul {
 .categories__content-cell.green  { 
   --tint:#219f21; 
   position: relative;
-  z-index: 1;  
+  z-index: auto;  
 }
 .categories__content-cell.red { 
   --tint:#790c0c;
   position: relative;
-  z-index: 1;  }
+  z-index: auto;  }
 .categories__content-cell.yellow { 
   --tint:#ffcf29;
   position: relative;
-  z-index: 1;
+  z-index: auto;
 }
 
 .categories__content-cell.arrow-up::before {
@@ -584,7 +600,8 @@ ul {
 .tooltip .tooltip-text {
   visibility: hidden;
   opacity: 0;
-  width: max-content;
+  width: auto;
+  min-width: 80px;
   max-width: 150px;
   background-color: #161511;
   color: #cccccc;
@@ -595,12 +612,14 @@ ul {
   padding: 8px 12px;
   border: 1px solid #877658;
   position: absolute;
-  z-index: 10; 
+  z-index: 1000; 
   bottom: 120%;
   left: 50%;
   transform: translateX(-50%);
   transition: opacity 0.3s ease-out;
+  pointer-events: none;
 }
+
 
 .tooltip .tooltip-text::after {
   content: "";
@@ -616,6 +635,7 @@ ul {
 .tooltip:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+  pointer-events: auto;
 }
 
 /* -------- animations ---------- */
