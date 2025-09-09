@@ -234,40 +234,43 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
 
   return (
     <div class="boss-list">
-      <div class="page-button">
-        <div class="page-button__input-wrapper">
-          <input
-            type="text"
-            spellcheck={false}
-            placeholder="Write the boss's name"
-            value={inputText}
-            onInput={(e) => {
-              setInputText((e.target as HTMLInputElement).value);
-              setInputIsSelected(true);
-            }}
-            onFocus={() => setInputIsSelected(true)}
-            onBlur={() => setTimeout(() => setInputIsSelected(false), 100)}
-            disabled={inputDisabled}
-            onKeyDown={onInputKey}
-          />
+      <div class="input-section">
+        <div class="estus-container">
+          <Estus lives={lives} />
         </div>
-        <button onClick={sendClickHandler}><img src={sendButtonImage} class="page-button_image" alt="" /></button>
-        {showSuggestions && (
-          <BossSuggestions
-            bosses={filteredBosses}
-            highlightIndex={highlightIndex}
-            onPick={(boss) => {
-              setInputText(boss.name);
-              setSelectedBoss(boss);
-              setInputIsSelected(false);
-            }}
-          />
-        )}
-      </div>
-
-      <div class="lives-counter">
-        <Estus lives={lives} />
-        <Tips />
+        <div class="page-button">
+          <div class="page-button__input-wrapper">
+            <input
+              type="text"
+              spellcheck={false}
+              placeholder="Write the boss's name"
+              value={inputText}
+              onInput={(e) => {
+                setInputText((e.target as HTMLInputElement).value);
+                setInputIsSelected(true);
+              }}
+              onFocus={() => setInputIsSelected(true)}
+              onBlur={() => setTimeout(() => setInputIsSelected(false), 100)}
+              disabled={inputDisabled}
+              onKeyDown={onInputKey}
+            />
+          </div>
+          <button onClick={sendClickHandler}><img src={sendButtonImage} class="page-button_image" alt="" /></button>
+          {showSuggestions && (
+            <BossSuggestions
+              bosses={filteredBosses}
+              highlightIndex={highlightIndex}
+              onPick={(boss) => {
+                setInputText(boss.name);
+                setSelectedBoss(boss);
+                setInputIsSelected(false);
+              }}
+            />
+          )}
+        </div>
+        <div class="tips-container">
+          <Tips />
+        </div>
       </div>
 
       <div class="categories">
