@@ -638,6 +638,65 @@ ul {
   pointer-events: auto;
 }
 
+/* --- Estus (vidas) --- */
+.estus {
+  position: relative;
+  width: 140px;           /* mesmas dimensões p/ ambas imagens */
+  height: 140px;          /* evita diferenças de aspect-ratio */
+  display: grid;
+  place-items: center;
+}
+
+.estus__glass,
+.estus__fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;    /* imagens encaixadas 1:1 */
+  display: block;
+  pointer-events: none;
+  image-rendering: auto;
+}
+
+/* camada: cheio por cima do vazio */
+.estus__glass { z-index: 1; }
+.estus__fill  { 
+  z-index: 2;
+  /* animação/progressão suave ancorada na base */
+  clip-path: inset(calc(100% - var(--fill)) 0 0 0);
+  transition: clip-path 180ms linear;
+  will-change: clip-path;
+}
+
+/* Pulso na última vida */
+.estus.is-critical .estus__fill {
+  animation: estusPulse .9s infinite;
+}
+
+/* Fallback quando mask não existir */
+@supports not (mask-image: linear-gradient(#000, #000)) {
+  .estus__fill {
+    clip-path: inset(calc(100% - var(--fill)) 0 0 0);
+    transition: clip-path 160ms linear;
+  }
+}
+
+.estus.is-animated {
+  animation: estusBottlePulse 1.2s ease-in-out infinite;
+  will-change: filter, transform;
+}
+
+/* Ajuste do container existente */
+.lives-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+  height: auto; 
+  min-height: 130px;
+}
+
 /* -------- animations ---------- */
 @keyframes pulse-mask {
 
@@ -711,4 +770,10 @@ ul {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes estusBottlePulse {
+  0%,100% { filter: none; transform: none; }
+  50%     { filter: brightness(1.30) saturate(1.08);
+            transform: translateZ(0) scale(1.012); }
 }

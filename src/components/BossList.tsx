@@ -370,6 +370,27 @@ function LoseModal({ onClose }: { onClose: () => void }) {
       return;
     }
   }
+
+function Estus({ lives, max = 7 }: { lives: number; max?: number }) {
+  const safeLives = Math.max(0, Math.min(max, lives));
+  const fill = safeLives / max;
+
+  const animate = safeLives > 2; // sem animação quando <= 2
+
+  return (
+    <div
+      class={`estus ${animate ? "is-animated" : ""}`}
+      style={{ ["--fill" as any]: `${fill * 100}%` }}
+      role="img"
+      aria-label={`${safeLives}/${max} vidas`}
+    >
+      <img src="/images/estus-full.png"  alt=""       class="estus__fill"  />
+      <img src="/images/estus-empty.png" alt="Vidas"  class="estus__glass" />
+    </div>
+  );
+}
+
+
   //sempre que o texto muda, ele reseta o highlight
   useEffect(() => {
     setHighlightIndex(0)
@@ -439,6 +460,14 @@ function LoseModal({ onClose }: { onClose: () => void }) {
     }
   }, []);
 
+  // Pré-carregamento das imagens dos chefes
+  useEffect(() => {
+    bosses.forEach(boss => {
+      const img = new Image()
+      img.src = `/bossImages/${boss.slug}.png`
+    })
+  }, [bosses])
+
   const suggestionsIsEmpty = filteredBosses.length === 0
   const inputIsEmpty = inputText.trim() === ""
   const showSuggestions = inputIsSelected && !inputIsEmpty && !suggestionsIsEmpty
@@ -471,14 +500,7 @@ function LoseModal({ onClose }: { onClose: () => void }) {
         )}
       </div>
       <div class="lives-counter">
-        <img
-          src={
-            lives >= 5
-              ? "/images/estus-full.png"
-              : lives >= 2
-              ? "/images/estus-midle.png"
-              : "/images/estus-empty.png"
-          } class="estus-image" />
+        <Estus lives={lives}/>
       </div>
       <div class="categories">
         {winModal && <WinModal onClose={() => setWinModal(false)} />}
