@@ -1,4 +1,4 @@
-import { useState, useEffect } from "preact/hooks";
+import { useState, useEffect, useRef } from "preact/hooks";
 import type { Boss, Bosses } from "../types/types";
 import "../styles/global.css"
 import type { JSX } from "preact/jsx-runtime";
@@ -167,14 +167,71 @@ export default function BossList({ bosses, sendButtonImage }: Props) {
   }
 
 function StatusIcons({ statusUses }: { statusUses: string[] | undefined | null }) {
+  const [hoveredTooltip, setHoveredTooltip] = useState<string | null>(null);
+  const tooltipRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const checkInterval = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    // Inicia checagem contínua a cada 500ms
+    checkInterval.current = setInterval(() => {
+      let foundHover = false;
+      
+      // Verifica cada tooltip para ver se o mouse está sobre ele
+      tooltipRefs.current.forEach((element, status) => {
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const mouseX = (window as any).lastMouseX || 0;
+          const mouseY = (window as any).lastMouseY || 0;
+          
+          if (mouseX >= rect.left && mouseX <= rect.right && 
+              mouseY >= rect.top && mouseY <= rect.bottom) {
+            if (hoveredTooltip !== status) {
+              setHoveredTooltip(status);
+            }
+            foundHover = true;
+          }
+        }
+      });
+      
+      // Se não encontrou nenhum hover, limpa o tooltip
+      if (!foundHover && hoveredTooltip !== null) {
+        setHoveredTooltip(null);
+      }
+    }, 100);
+
+    // Rastreia posição do mouse globalmente
+    const handleMouseMove = (e: MouseEvent) => {
+      (window as any).lastMouseX = e.clientX;
+      (window as any).lastMouseY = e.clientY;
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      if (checkInterval.current) clearInterval(checkInterval.current);
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [hoveredTooltip]);
+
+  const registerTooltip = (status: string, element: HTMLElement | null) => {
+    if (element) {
+      tooltipRefs.current.set(status, element);
+    } else {
+      tooltipRefs.current.delete(status);
+    }
+  };
+
   if (!statusUses || statusUses.length === 0 || statusUses.every(s => s.trim() === "")) {
     return (
       <div class="status-icon-container icon-mode count-1">
-        <div class="tooltip">
+        <div 
+          class="tooltip"
+          ref={(el) => registerTooltip("none", el)}
+        >
           <span class="status-badge">
             <img src="/icons/none.png" class="status-icon" alt="none" />
           </span>
-          <span class="tooltip-text">none</span>
+          <span class={`tooltip-text ${hoveredTooltip === "none" ? "visible" : ""}`}>none</span>
         </div>
       </div>
     );
@@ -189,11 +246,15 @@ function StatusIcons({ statusUses }: { statusUses: string[] | undefined | null }
         const iconSrc = statusIconMap[status];
         if (!iconSrc) return <span class="status-text" key={status}>{status}</span>;
         return (
-          <div class="tooltip" key={status}>
+          <div 
+            class="tooltip" 
+            key={status}
+            ref={(el) => registerTooltip(status, el)}
+          >
             <span class="status-badge">
               <img src={iconSrc} class="status-icon" alt={status} />
             </span>
-            <span class="tooltip-text">{status}</span>
+            <span class={`tooltip-text ${hoveredTooltip === status ? "visible" : ""}`}>{status}</span>
           </div>
         );
       })}
@@ -374,8 +435,9 @@ function LoseModal({ onClose }: { onClose: () => void }) {
 function Estus({ lives, max = 7 }: { lives: number; max?: number }) {
   const safeLives = Math.max(0, Math.min(max, lives));
   const fill = safeLives / max;
+  const uses = Math.max(0, safeLives - 1);
 
-  const animate = safeLives > 2; // sem animação quando <= 2
+  const animate = safeLives > 1;
 
   return (
     <div
@@ -386,6 +448,7 @@ function Estus({ lives, max = 7 }: { lives: number; max?: number }) {
     >
       <img src="/images/estus-full.png"  alt=""       class="estus__fill"  />
       <img src="/images/estus-empty.png" alt="Vidas"  class="estus__glass" />
+      <div class="estus__counter">{uses}</div>
     </div>
   );
 }
